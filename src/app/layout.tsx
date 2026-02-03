@@ -1,8 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Anton } from "next/font/google"; // 1. Import Anton
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
+
+// 2. Configure Anton font
+const anton = Anton({ 
+  subsets: ["latin"], 
+  weight: "400",
+  variable: "--font-anton" // We will use this variable in Tailwind
+});
 
 export const metadata: Metadata = {
   title: "My Portfolio",
@@ -16,7 +23,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${inter.className} bg-black text-white antialiased`}>
+      {/* 3. Add anton.variable to the body class list */}
+      <body className={`${inter.className} ${anton.variable} bg-black text-white antialiased`}>
         {children}
       </body>
     </html>

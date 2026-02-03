@@ -7,6 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      // 👇 Add this section here
+      fontFamily: {
+        anton: ["var(--font-anton)"],
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",

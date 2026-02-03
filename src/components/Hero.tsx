@@ -30,14 +30,17 @@ export default function Hero() {
   return (
     <section ref={container} className="h-screen flex flex-col justify-center px-6 pt-16">
       <div className="container mx-auto">
-        <h1 ref={titleRef} className="text-6xl md:text-9xl font-bold tracking-tighter text-white mb-6">
-          CREATIVE <br />
+        {/* Updated Font (font-anton) and Size (text-[10rem] for massive impact) */}
+        <h1 ref={titleRef} className="font-anton text-6xl md:text-9xl lg:text-[11rem] uppercase leading-[0.85] text-white mb-8">
+          HI I'M <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-            DEVELOPER
+            KAVINDU
           </span>
         </h1>
-        <p ref={subRef} className="text-xl md:text-2xl text-gray-400 max-w-2xl">
-          I build digital experiences with Next.js, Tailwind CSS, and GSAP.
+        
+        {/* Updated Subtitle */}
+        <p ref={subRef} className="text-xl md:text-2xl text-gray-400 max-w-3xl leading-relaxed">
+          Data Science Undergraduate | AI Enthusiast | Software Developer.
         </p>
       </div>
     </section>
