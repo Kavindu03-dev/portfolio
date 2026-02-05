@@ -10,7 +10,7 @@ export default function Header() {
   
   const container = useRef(null);
   const menuRef = useRef(null);
-  const linksRef = useRef<(HTMLAnchorElement | null)[]>([]);
+  const linksRef = useRef<(HTMLSpanElement | null)[]>([]);
   const tl = useRef<gsap.core.Timeline | null>(null);
 
   const toggleMenu = () => {
@@ -69,22 +69,19 @@ export default function Header() {
   ];
 
   return (
-    // Added onMouseLeave here to close menu when cursor leaves the header area completely
     <header 
       ref={container} 
       className="fixed top-0 w-full z-50"
       onMouseLeave={() => setIsMenuOpen(false)}
     >
-      {/* 1. Top Bar */}
       <div className="absolute top-0 left-0 w-full z-50 px-6 h-20 flex items-center justify-between mix-blend-difference text-white">
         <Link href="/" className="text-xl font-bold tracking-tighter">
           PORTFOLIO.
         </Link>
 
-        {/* Updated Button with onMouseEnter */}
         <button 
           onClick={toggleMenu}
-          onMouseEnter={() => setIsMenuOpen(true)} // <-- AUTO SHOW ON HOVER
+          onMouseEnter={() => setIsMenuOpen(true)}
           className="group flex flex-col items-end gap-[6px] p-2 cursor-pointer"
         >
            {isMenuOpen ? (
@@ -102,41 +99,36 @@ export default function Header() {
         </button>
       </div>
 
-      {/* 2. Full Screen Menu Overlay */}
       <div 
         ref={menuRef}
-        className="fixed inset-0 bg-black z-40 flex flex-col -translate-y-full"
+        className="fixed inset-0 bg-[#050505] z-40 flex flex-col -translate-y-full"
       >
-        <div className="container mx-auto px-6 h-full flex flex-col justify-center">
+        <div className="w-full h-full flex flex-col justify-center items-center">
           
-          <div className="absolute top-8 right-20 hidden md:flex items-center gap-8 text-gray-400">
-             <div className="flex gap-6 text-2xl">
-                <a href="#" className="hover:text-white transition-colors">✉️</a>
-                <a href="#" className="hover:text-white transition-colors">⌘</a>
-                <a href="#" className="hover:text-white transition-colors">in</a>
-             </div>
-             <a 
-               href="/cv.pdf" 
-               className="border border-white/20 px-4 py-2 rounded-md text-sm text-white hover:bg-white hover:text-black transition-all"
-             >
-               Download CV
-             </a>
-          </div>
-
-          <nav className="flex flex-col gap-2">
+          <div className="links anchors flex flex-col w-full">
             {menuItems.map((item, i) => (
-              <div key={item.name} className="overflow-hidden">
-                <a
+              <a
+                key={i}
+                href={`#${item.id}`}
+                onClick={(e) => scrollToSection(e, item.id)}
+                // Fixed height: h-12 (mobile) and md:h-20 (desktop) to make boxes smaller
+                className="links__item group relative w-full border-b border-white/10 overflow-hidden cursor-pointer flex items-end justify-center h-12 md:h-20 decoration-0"
+              >
+                <div className="absolute bottom-0 left-0 w-full h-0 bg-[#bfd0e0] transition-all duration-500 ease-in-out group-hover:h-full" />
+
+                {/* - text-6xl / 8xl: Large text size
+                    - -mb-2 md:-mb-3: Negative margin pulls text down to create the 'clipped' look
+                */}
+                <span 
                   ref={(el) => { if (linksRef.current) linksRef.current[i] = el; }}
-                  href={`#${item.id}`}
-                  onClick={(e) => scrollToSection(e, item.id)}
-                  className="block font-anton text-6xl md:text-8xl lg:text-9xl text-gray-400 hover:text-white transition-colors uppercase leading-none tracking-wide"
+                  className="links__text relative z-10 block font-sans font-bold text-6xl md:text-8xl tracking-tighter leading-[0.8] text-[#bfd0e0] group-hover:text-black transition-colors duration-300 -mb-2 md:-mb-3"
                 >
                   {item.name}
-                </a>
-              </div>
+                </span>
+              </a>
             ))}
-          </nav>
+          </div>
+
         </div>
       </div>
     </header>
