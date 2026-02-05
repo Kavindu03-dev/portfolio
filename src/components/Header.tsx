@@ -63,6 +63,7 @@ export default function Header() {
   const menuItems = [
     { name: 'HOME', id: 'home' },
     { name: 'ABOUT ME', id: 'about' },
+    { name: 'WHY ME', id: 'whyme' },
     { name: 'PROJECTS', id: 'projects' },
     { name: 'CONTACT', id: 'contact' },
   ];
