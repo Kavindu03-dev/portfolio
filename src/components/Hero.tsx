@@ -13,13 +13,34 @@ export default function Hero() {
   const samurai2Ref = useRef(null);
   const samurai3Ref = useRef(null);
   const katanaRef = useRef(null);
-  const textContainerRef = useRef(null);
   const extraContentRef = useRef(null);
+  
+  // Text Refs
+  const textContainerRef = useRef(null);
+  const roleRefs = useRef([]); 
   
   const embersRef = useRef([]);
 
+  // Roles List
+  const roles = [
+    { left: "SOFTWARE", right: "DEVELOPER" },
+    { left: "WEB", right: "DEVELOPER" },
+    { left: "AI", right: "ENTHUSIAST" },
+    { left: "DATA", right: "ENGINEER" },
+    { left: "DATA", right: "ANALYST" }
+  ];
+
   useGSAP(() => {
     
+    // SAFETY CHECK
+    if (
+        !samurai1Ref.current || 
+        !samurai2Ref.current || 
+        !samurai3Ref.current || 
+        !katanaRef.current || 
+        !textContainerRef.current 
+    ) return;
+
     // 1. INITIAL SETUP
     
     // Samurai Images
@@ -32,19 +53,26 @@ export default function Hero() {
       opacity: 0,
       scale: 0.85, 
       y: 450,
-      filter: "blur(0px)" // මුල සිටම Blur එකක් නෑ
+      filter: "blur(0px)"
     });
 
-    gsap.set(textContainerRef.current, { opacity: 0, y: 100, scale: 0.9 });
+    // Main Title Setup
+    gsap.set(textContainerRef.current, { opacity: 0, y: 50, scale: 0.8 });
+
+    // Roles Text Setup
+    roleRefs.current.forEach((el) => {
+        if(!el) return;
+        gsap.set(el, { opacity: 1, zIndex: 45 }); 
+    });
 
     // 2. MASTER TIMELINE
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
         start: "top top",
-        end: "+=6000",
+        end: "+=9000",
         pin: true,
-        scrub: 1.5,
+        scrub: 1,
       }
     });
 
@@ -58,43 +86,83 @@ export default function Hero() {
     tl.to(samurai2Ref.current, { opacity: 0, filter: "blur(5px)", scale: 1.05, duration: 1, ease: "power1.inOut" })
       .to(samurai3Ref.current, { opacity: 1, filter: "blur(0px)", scale: 1, duration: 1, ease: "power1.inOut" }, "<");
 
-    // --- PHASE 3: Samurai 3 OUT & Katana IN (The Reveal) ---
-    
-    // A. Samurai 3 මැකී යනවා (Katana එක එනකොටම සම්පූර්ණයෙන්ම අයින් වෙනවා)
+    // --- PHASE 3: Samurai 3 OUT & Katana IN ---
     tl.to(samurai3Ref.current, {
-      opacity: 0,           // සම්පූර්ණයෙන්ම මැකී යයි
+      opacity: 0,
       scale: 1.15, 
       filter: "blur(20px)", 
       duration: 1.5 
     })
-    
-    // B. Katana එක මතු වෙලා නියමිත තැනට එනවා (වඩාත් විශාලව)
     .to(katanaRef.current, {
       opacity: 1,
-      scale: 2.5,          // <--- වෙනස්කම: Scale එක 1.4 සිට 2.5 කළා (ලොකුවට/මහතට පෙනෙන්න)
-      y: 50,               
-      filter: "blur(0px)", // <--- Blur එකක් නෑ (Sharp Image)
+      scale: 2.5,
+      y: 50,
+      filter: "blur(0px)",
       duration: 2,
       ease: "power2.out"
-    }, "<"); // Samurai 3 යනකොටම Katana එක එනවා
+    }, "<"); 
 
-    // --- PHASE 4: THE FREEZE & HANDLE ZOOM ---
+    // --- PHASE 4: THE ROLES LOOP (UPDATED ANIMATION) ---
     
-    // C. FREEZE: Katana එක ලොකුවට පෙන්නලා ටික වෙලාවක් නවතිනවා
-    tl.to({}, { duration: 1.5 }); 
+    roles.forEach((_, index) => {
+        const container = roleRefs.current[index];
+        if (!container) return;
+        
+        const leftWord = container.children[0];
+        const rightWord = container.children[1];
 
-    // D. ZOOM TO HANDLE:
+        // 1. Entrance: දෙපැත්තේ කෙළවරේ සිට වේගයෙන් මැදට පැමිණීම
+        tl.fromTo([leftWord, rightWord], 
+            { 
+                opacity: 0, 
+                scale: 1.5, 
+                filter: "blur(10px)",
+                x: (i) => i === 0 ? -800 : 800 // වම් එක ඉතා ඈත වමෙන්, දකුණු එක ඉතා ඈත දකුණෙන්
+            },
+            {
+                opacity: 1,
+                scale: 1, 
+                filter: "blur(0px)",
+                x: 0, // නියමිත ස්ථානයට (Gap එක තියාගෙන)
+                duration: 0.6,
+                ease: "power4.out" // Impact එකක් එක්ක නවතින්න
+            },
+            index === 0 ? "<+=0.5" : ">-=0.1"
+        );
+
+        // 2. Hold: ටික වෙලාවක් රැඳී සිටීම (Glow Effect)
+        tl.to([leftWord, rightWord], {
+            textShadow: "0 0 25px white, 0 0 35px #ff0000",
+            scale: 1.1, // පොඩි Zoom එකක්
+            duration: 1.5,
+            yoyo: true,
+            repeat: 1,
+            ease: "sine.inOut"
+        });
+
+        // 3. EXIT: "Into the Blade" Animation (කඩුව ඇතුලට ඇදී යාම)
+        tl.to([leftWord, rightWord], {
+            x: (i) => i === 0 ? 150 : -150, // වචන දෙක මැදට (එකිනෙකා දෙසට) එනවා
+            scale: 0, // ශනිකව කුඩා වෙනවා
+            opacity: 0,
+            filter: "blur(20px)", 
+            duration: 0.4, // ඉතා ඉක්මනින්
+            ease: "expo.in" // Vacuum එකක් වගේ ඇතුලට අදිනවා
+        });
+    });
+
+    // --- PHASE 5: ZOOM TO HANDLE ---
     tl.to(katanaRef.current, {
-      scale: 5,            // <--- Handle එකට තවත් Zoom වෙනවා (කලින් 2.5 නිසා දැන් 5 කළා)
-      y: 300,              
+      scale: 5,
+      y: 300,
       duration: 3,     
       ease: "power1.inOut"
     });
 
-    // --- PHASE 5: THE CLIMAX (FLY THROUGH) ---
+    // --- PHASE 6: THE CLIMAX ---
     tl.to(katanaRef.current, {
-      scale: 40,           // දැවැන්ත Zoom එක
-      y: 2000,             
+      scale: 40,
+      y: 2000,
       opacity: 0,      
       duration: 3,     
       ease: "power2.in" 
@@ -124,12 +192,16 @@ export default function Hero() {
   }, { scope: containerRef });
 
   const imageClasses = "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[85vh] md:h-[95vh] w-auto object-contain drop-shadow-[0_0_50px_rgba(0,0,0,0.8)]";
+  
+  // දිලිසෙන අකුරු සඳහා Class එක
+  const glowingTextClass = "font-cinzel text-4xl sm:text-5xl md:text-7xl font-bold text-gray-200 tracking-widest drop-shadow-[0_0_10px_rgba(255,255,255,0.7)] shadow-red-500 whitespace-nowrap";
 
   return (
     <main>
         {/* HERO SECTION */}
         <section ref={containerRef} className="relative h-screen w-full overflow-hidden bg-black flex items-center justify-center">
         
+        {/* Background Gradient */}
         <div className="absolute inset-0 z-0 bg-gradient-to-b from-gray-900 via-black to-black" />
         
         {/* Embers */}
@@ -146,7 +218,7 @@ export default function Hero() {
 
         {/* IMAGES CONTAINER */}
         <div className="absolute inset-0 z-20 pointer-events-none">
-            {/* Samurai Images (Layer 1) */}
+            {/* Samurai Images */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img ref={samurai1Ref} src="/samurai1.png" alt="Samurai 1" className={`${imageClasses} z-20`} />
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -154,10 +226,10 @@ export default function Hero() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img ref={samurai3Ref} src="/samurai3.png" alt="Samurai 3" className={`${imageClasses} z-20`} />
 
-            {/* Dark Shade Overlay (Layer 2) - z-30 */}
+            {/* Dark Shade Overlay */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_90%)] z-30 pointer-events-none" />
             
-            {/* Katana Image (Top Layer) - z-50 */}
+            {/* Katana Image */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
             ref={katanaRef}
@@ -168,9 +240,31 @@ export default function Hero() {
             />
         </div>
 
-        {/* TEXT CONTENT */}
-        <div ref={textContainerRef} className="relative z-40 text-center px-4 mix-blend-overlay">
-            <h1 className="font-cinzel text-6xl sm:text-8xl md:text-9xl font-bold uppercase text-white drop-shadow-[0_5px_15px_rgba(255,0,0,0.5)] tracking-widest">
+        {/* --- SCROLLING ROLES TEXT --- */}
+        {/* Gap එක වැඩි කළා (md:gap-32) කඩුවේ Handle එකට හොඳට ඉඩ තියන්න */}
+        <div className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none mix-blend-screen">
+             {roles.map((role, index) => (
+                <div 
+                    key={index}
+                    ref={(el) => { if (el) roleRefs.current[index] = el }}
+                    className="absolute flex justify-center items-center gap-12 md:gap-32 w-full" 
+                >
+                     {/* වම් පස වචනය */}
+                     <h2 className={`${glowingTextClass} text-right flex-1`}>
+                        {role.left}
+                     </h2>
+                     
+                     {/* දකුණු පස වචනය */}
+                     <h2 className={`${glowingTextClass} text-left flex-1`}>
+                        {role.right}
+                     </h2>
+                </div>
+             ))}
+        </div>
+
+        {/* --- MAIN TITLE --- */}
+        <div ref={textContainerRef} className="relative z-[60] text-center px-4">
+            <h1 className="font-cinzel text-6xl sm:text-8xl md:text-9xl font-bold uppercase text-white drop-shadow-[0_0_25px_rgba(255,0,0,0.8)] tracking-widest">
             KAVINDU
             </h1>
             <div className="mt-6 flex flex-col items-center justify-center gap-4">
