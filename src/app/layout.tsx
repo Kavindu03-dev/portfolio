@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
-import { Inter, Anton } from "next/font/google"; // 1. Import Anton
+import { Inter, Share_Tech, Cinzel } from "next/font/google"; // 1. Import Share_Tech and Cinzel
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-// 2. Configure Anton font
-const anton = Anton({ 
-  subsets: ["latin"], 
+// 2. Configure Share Tech font
+const shareTech = Share_Tech({
+  subsets: ["latin"],
   weight: "400",
-  variable: "--font-anton" // We will use this variable in Tailwind
+  variable: "--font-share-tech" // We will use this variable in Tailwind
+});
+
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  variable: "--font-cinzel"
 });
 
 export const metadata: Metadata = {
@@ -23,8 +28,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      {/* 3. Add anton.variable to the body class list */}
-      <body className={`${inter.className} ${anton.variable} bg-black text-white antialiased`}>
+      {/* 3. Add shareTech.variable to the body class list */}
+      <body className={`${inter.className} ${shareTech.variable} ${cinzel.variable} bg-black text-white antialiased`}>
         {children}
       </body>
     </html>

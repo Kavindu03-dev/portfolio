@@ -9,7 +9,8 @@ module.exports = {
     extend: {
       // 👇 Add this section here
       fontFamily: {
-        anton: ["var(--font-anton)"],
+        "share-tech": ["var(--font-share-tech)"],
+        "cinzel": ["var(--font-cinzel)"],
       },
       colors: {
         background: "var(--background)",
