@@ -5,14 +5,12 @@ import WhyMe from '@/components/WhyMe'; // <-- 1. Import Here
 import Projects from '@/components/Projects';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
-import SplineBackground from '@/components/SplineBackground';
+import CustomCursor from '@/components/CustomCursor';
 
 export default function Home() {
   return (
     <main className="relative min-h-screen bg-black">
-      {/* 1. 3D Background (Fixed at the back) */}
-      <SplineBackground />
-
+      <CustomCursor />
       {/* 2. Main Content (Sitting on top) */}
       <div className="relative z-10">
         <Header />

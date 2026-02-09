@@ -60,12 +60,13 @@ export default function Header() {
     }
   }, [isMenuOpen]);
 
+  // Names updated to match the Samurai Theme, but structure kept same
   const menuItems = [
     { name: 'HOME', id: 'home' },
-    { name: 'ABOUT ME', id: 'about' },
-    { name: 'WHY ME', id: 'whyme' },
-    { name: 'PROJECTS', id: 'projects' },
-    { name: 'CONTACT', id: 'contact' },
+    { name: 'ORIGINS', id: 'about' },
+    { name: 'JOURNEY', id: 'whyme' },
+    { name: 'ARSENAL', id: 'projects' },
+    { name: 'SUMMON', id: 'contact' },
   ];
 
   return (
@@ -75,8 +76,8 @@ export default function Header() {
       onMouseLeave={() => setIsMenuOpen(false)}
     >
       <div className="absolute top-0 left-0 w-full z-50 px-6 h-20 flex items-center justify-between mix-blend-difference text-white">
-        <Link href="/" className="text-xl font-bold tracking-tighter">
-          PORTFOLIO.
+        <Link href="/" className="text-xl font-cinzel font-bold tracking-tighter">
+          KAVINDU<span className="text-red-600">.</span>
         </Link>
 
         <button 
@@ -86,14 +87,14 @@ export default function Header() {
         >
            {isMenuOpen ? (
               <div className="relative w-8 h-8 flex items-center justify-center">
-                 <span className="absolute w-full h-[2px] bg-white rotate-45 transform transition-transform" />
-                 <span className="absolute w-full h-[2px] bg-white -rotate-45 transform transition-transform" />
+                 <span className="absolute w-full h-[2px] bg-red-600 rotate-45 transform transition-transform" />
+                 <span className="absolute w-full h-[2px] bg-red-600 -rotate-45 transform transition-transform" />
               </div>
            ) : (
              <>
-               <span className="w-8 h-[2px] bg-white transition-all group-hover:w-10" />
-               <span className="w-8 h-[2px] bg-white transition-all group-hover:w-6" />
-               <span className="w-8 h-[2px] bg-white transition-all group-hover:w-8" />
+               <span className="w-8 h-[2px] bg-white transition-all group-hover:w-10 group-hover:bg-red-600" />
+               <span className="w-8 h-[2px] bg-white transition-all group-hover:w-6 group-hover:bg-red-600" />
+               <span className="w-8 h-[2px] bg-white transition-all group-hover:w-8 group-hover:bg-red-600" />
              </>
            )}
         </button>
@@ -101,7 +102,7 @@ export default function Header() {
 
       <div 
         ref={menuRef}
-        className="fixed inset-0 bg-[#050505] z-40 flex flex-col -translate-y-full"
+        className="fixed inset-0 bg-black z-40 flex flex-col -translate-y-full"
       >
         <div className="w-full h-full flex flex-col justify-center items-center">
           
@@ -111,17 +112,16 @@ export default function Header() {
                 key={i}
                 href={`#${item.id}`}
                 onClick={(e) => scrollToSection(e, item.id)}
-                // Fixed height: h-12 (mobile) and md:h-20 (desktop) to make boxes smaller
+                // SIZES KEPT EXACTLY THE SAME: h-12 md:h-20
                 className="links__item group relative w-full border-b border-white/10 overflow-hidden cursor-pointer flex items-end justify-center h-12 md:h-20 decoration-0"
               >
-                <div className="absolute bottom-0 left-0 w-full h-0 bg-[#bfd0e0] transition-all duration-500 ease-in-out group-hover:h-full" />
+                {/* Hover Background: Changed Blue to Red */}
+                <div className="absolute bottom-0 left-0 w-full h-0 bg-red-600 transition-all duration-500 ease-in-out group-hover:h-full" />
 
-                {/* - text-6xl / 8xl: Large text size
-                    - -mb-2 md:-mb-3: Negative margin pulls text down to create the 'clipped' look
-                */}
                 <span 
                   ref={(el) => { if (linksRef.current) linksRef.current[i] = el; }}
-                  className="links__text relative z-10 block font-sans font-bold text-6xl md:text-8xl tracking-tighter leading-[0.8] text-[#bfd0e0] group-hover:text-black transition-colors duration-300 -mb-2 md:-mb-3"
+                  // SIZES/MARGINS KEPT SAME (-mb-2 md:-mb-3), Font changed to Cinzel, Color to Zinc/Black
+                  className="links__text relative z-10 block font-cinzel font-bold text-6xl md:text-8xl tracking-tighter leading-[0.8] text-zinc-500 group-hover:text-black transition-colors duration-300 -mb-2 md:-mb-3"
                 >
                   {item.name}
                 </span>
