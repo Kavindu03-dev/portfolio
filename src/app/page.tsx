@@ -1,5 +1,6 @@
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
+import HeroAboutTransition from '@/components/HeroAboutTransition';
 import About from '@/components/About';
 import WhyMe from '@/components/WhyMe'; // <-- 1. Import Here
 import Projects from '@/components/Projects';
@@ -15,6 +16,7 @@ export default function Home() {
       <div className="relative z-10">
         <Header />
         <Hero />
+        <HeroAboutTransition />
         <About />
         <WhyMe /> {/* <-- 2. Add Component Here */}
         <Projects />

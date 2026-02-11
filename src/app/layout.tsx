@@ -16,6 +16,8 @@ const cinzel = Cinzel({
   variable: "--font-cinzel"
 });
 
+import LoadingScreen from "@/components/LoadingScreen";
+
 export const metadata: Metadata = {
   title: "My Portfolio",
   description: "Creative Developer Portfolio",
@@ -30,6 +32,7 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       {/* 3. Add shareTech.variable to the body class list */}
       <body className={`${inter.className} ${shareTech.variable} ${cinzel.variable} bg-black text-white antialiased`}>
+        <LoadingScreen />
         {children}
       </body>
     </html>
